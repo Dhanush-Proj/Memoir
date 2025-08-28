@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memoir</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        /* --- Color Variables --- */
+        :root {
+            --primary-color: #5d5d81;
+            --secondary-color: #f7b731;
+            --background-light: #f4f7f6;
+            --card-background: #ffffff;
+            --text-dark: #333;
+            --text-light: #666;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            --form-background: #f4f4f4;
+            --input-border: #ddd;
+        }
+        
+        /* --- Dark Mode Variables --- */
+        body.dark-mode {
+            --background-light: #121212;
+            --card-background: #1e1e1e;
+            --form-background: #2a2a2a;
+            --text-dark: #ffffff;
+            --text-light: #b0b0b0;
+            --input-border: #444;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            line-height: 1.6;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* --- Dark Mode Toggle Button --- */
+        #mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--secondary-color);
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        #mode-toggle:hover {
+            background-color: #e6a72c;
+        }
+
+        /* --- Top-Left Add Button --- */
+        #add-blog-btn {
+            position: fixed;
+            left: 20px;
+            top: 20px;
+            z-index: 1000;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            background-color: var(--secondary-color);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .blog-form:not([style*="display: none"]) ~ #add-blog-btn {
+            display: none;
+        }
+
+
+        .blog-form {
+            background: var(--form-background);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            display: none; 
+        }
+        .blog-form h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .blog-form input, .blog-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: var(--card-background);
+            color: var(--text-dark);
+            transition: border-color 0.2s;
+        }
+        .blog-form input:focus, .blog-form textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+        .form-actions button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        #submit-btn { background-color: var(--primary-color); }
+        #submit-btn:hover { background-color: #4b4b6c; transform: scale(1.02); }
+        #cancel-btn { background-color: #aaa; }
+        #cancel-btn:hover { background-color: #999; transform: scale(1.02); }
+        
+        #blogs-list {
+            margin-top: 50px;
+        }
+        .blog-post {
+            background: var(--card-background);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+        }
+        .blog-post h3 {
+            color: var(--primary-color);
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        .blog-post p {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .blog-post img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        .blog-post .actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .blog-post .actions button {
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .blog-post .actions .edit-btn { background: var(--secondary-color); color: white; }
+        .blog-post .actions .edit-btn:hover { transform: translateY(-2px); }
+        .blog-post .actions .delete-btn { background: #dc3545; color: white; }
+        .blog-post .actions .delete-btn:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+  <div class="container">
+      <h1>Memoir</h1>
+      
+      <form id="blog-form" class="blog-form">
+            <h2>Add/Edit Blog</h2>
+            <input type="hidden" id="blog-id">
+            <input type="text" id="blog-title" placeholder="Blog Title" required>
+            <input type="text" id="blog-date" placeholder="Date (e.g., YYYY-MM-DD)" required>
+            <textarea id="blog-content" rows="5" placeholder="Blog Content" required></textarea>
+            <input type="text" id="blog-image" placeholder="Image URL">
+            <div class="form-actions">
+                <button type="submit" id="submit-btn">Add Blog</button>
+                <button type="button" id="cancel-btn">Cancel</button>
+            </div>
+        </form>
+
+        <div id="blogs-list">
+            <h2>Recent Posts</h2>
+        </div>
+    </div>
+
+    <button id="add-blog-btn">Add New Blog</button>
+    <button id="mode-toggle">Toggle Dark Mode</button>
+
+    <script src="src/main.js"></script>
+</body>
+</html>
