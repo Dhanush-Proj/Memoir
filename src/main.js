@@ -22,7 +22,7 @@ async function fetchBlogs() {
         const response = await fetch(API_URL);
         const blogs = await response.json();
         
-        blogsList.innerHTML = '<h2>Recent Posts</h2>'; 
+        // blogsList.innerHTML = '<h2>Recent Posts</h2>'; 
         
         if (blogs.length === 0) {
             blogsList.innerHTML += '<p>No blogs found. Add one above!</p>';
@@ -36,7 +36,7 @@ async function fetchBlogs() {
                 <h3>${blog.title}</h3>
                 <p><strong>Date:</strong> ${blog.date}</p>
                 <p>${blog.content}</p>
-                ${blog.image ? `<img src="${blog.image}" alt="${blog.title}" style="max-width: 100%; height: auto;">` : ''}
+                ${blog.image ? `<img src="${blog.image}" alt="${blog.title}" style="max-width: 50%; height: 50%;  ">` : ''}
                 <div class="actions">
                     <button class="edit-btn" onclick="editBlog('${blog.id}', '${blog.title}', '${blog.date}', '${blog.content}', '${blog.image}')">Edit</button>
                     <button class="delete-btn" onclick="deleteBlog('${blog.id}')">Delete</button>
@@ -129,3 +129,4 @@ modeToggleBtn.addEventListener('click', () => {
 
 // Initial call to fetch blogs on page load
 fetchBlogs();
+

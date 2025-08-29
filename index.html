@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +20,7 @@
             --form-background: #f4f4f4;
             --input-border: #ddd;
         }
-        
+
         /* --- Dark Mode Variables --- */
         body.dark-mode {
             --background-light: #121212;
@@ -39,12 +40,16 @@
             color: var(--text-dark);
             transition: background-color 0.3s, color 0.3s;
         }
+
         .container {
             max-width: 900px;
             margin: 40px auto;
             padding: 0 20px;
+
         }
-        h1, h2 {
+
+        h1,
+        h2 {
             text-align: center;
             color: var(--primary-color);
             font-weight: 600;
@@ -65,6 +70,7 @@
             font-size: 14px;
             transition: background-color 0.2s;
         }
+
         #mode-toggle:hover {
             background-color: #e6a72c;
         }
@@ -84,7 +90,8 @@
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        .blog-form:not([style*="display: none"]) ~ #add-blog-btn {
+
+        .blog-form:not([style*="display: none"])~#add-blog-btn {
             display: none;
         }
 
@@ -95,13 +102,17 @@
             border-radius: 12px;
             box-shadow: var(--shadow);
             margin-bottom: 30px;
-            display: none; 
+            display: none;
+
         }
+
         .blog-form h2 {
             margin-top: 0;
             margin-bottom: 20px;
         }
-        .blog-form input, .blog-form textarea {
+
+        .blog-form input,
+        .blog-form textarea {
             width: 100%;
             padding: 12px;
             margin-bottom: 15px;
@@ -113,15 +124,19 @@
             color: var(--text-dark);
             transition: border-color 0.2s;
         }
-        .blog-form input:focus, .blog-form textarea:focus {
+
+        .blog-form input:focus,
+        .blog-form textarea:focus {
             border-color: var(--primary-color);
             outline: none;
         }
+
         .form-actions {
             display: flex;
             gap: 15px;
             justify-content: flex-end;
         }
+
         .form-actions button {
             padding: 12px 25px;
             border: none;
@@ -131,42 +146,66 @@
             cursor: pointer;
             transition: background-color 0.2s, transform 0.2s;
         }
-        #submit-btn { background-color: var(--primary-color); }
-        #submit-btn:hover { background-color: #4b4b6c; transform: scale(1.02); }
-        #cancel-btn { background-color: #aaa; }
-        #cancel-btn:hover { background-color: #999; transform: scale(1.02); }
-        
+
+        #submit-btn {
+            background-color: var(--primary-color);
+        }
+
+        #submit-btn:hover {
+            background-color: #4b4b6c;
+            transform: scale(1.02);
+        }
+
+        #cancel-btn {
+            background-color: #aaa;
+        }
+
+        #cancel-btn:hover {
+            background-color: #999;
+            transform: scale(1.02);
+        }
+
         #blogs-list {
             margin-top: 50px;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 10px;
         }
+
         .blog-post {
             background: var(--card-background);
             padding: 30px;
             border-radius: 12px;
             box-shadow: var(--shadow);
             margin-bottom: 25px;
+            width: 800px;
         }
+
         .blog-post h3 {
             color: var(--primary-color);
             font-size: 24px;
             margin-bottom: 5px;
         }
+
         .blog-post p {
             color: var(--text-light);
             font-size: 14px;
             margin-bottom: 15px;
         }
+
         .blog-post img {
-            max-width: 100%;
-            height: auto;
+            max-width: 500;
+            height: 500px;
             border-radius: 8px;
             margin-top: 15px;
         }
+
         .blog-post .actions {
             margin-top: 20px;
             display: flex;
             gap: 10px;
         }
+
         .blog-post .actions button {
             padding: 8px 15px;
             border-radius: 50px;
@@ -174,18 +213,51 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
-        .blog-post .actions .edit-btn { background: var(--secondary-color); color: white; }
-        .blog-post .actions .edit-btn:hover { transform: translateY(-2px); }
-        .blog-post .actions .delete-btn { background: #dc3545; color: white; }
-        .blog-post .actions .delete-btn:hover { transform: translateY(-2px); }
+
+        img {
+            cursor: pointer;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            transition: 500ms;
+        }
+
+ 
+        img:hover{
+            transform: scale(1.55);
+            opacity: 1;
+            transition: 500ms;
+            border: black 4px;
+        }
+       
+        .blog-post .actions .edit-btn {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .blog-post .actions .edit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .blog-post .actions .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .blog-post .actions .delete-btn:hover {
+            transform: translateY(-2px);
+        }
     </style>
 </head>
+
 <body>
 
-  <div class="container">
-      <h1>Memoir</h1>
-      
-      <form id="blog-form" class="blog-form">
+    <div class="container">
+        <h1>Memoir</h1>
+        <h2>Recent Posts</h2>
+        <div id="blogs-list">
+        </div>
+
+        <form id="blog-form" class="blog-form">
             <h2>Add/Edit Blog</h2>
             <input type="hidden" id="blog-id">
             <input type="text" id="blog-title" placeholder="Blog Title" required>
@@ -197,10 +269,6 @@
                 <button type="button" id="cancel-btn">Cancel</button>
             </div>
         </form>
-
-        <div id="blogs-list">
-            <h2>Recent Posts</h2>
-        </div>
     </div>
 
     <button id="add-blog-btn">Add New Blog</button>
@@ -208,4 +276,5 @@
 
     <script src="src/main.js"></script>
 </body>
+
 </html>
